@@ -39,11 +39,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.flowpay.app.R
 import com.flowpay.app.data.Transaction
 import com.flowpay.app.ui.components.TransactionDetailDialog
-import com.flowpay.app.ui.theme.BlueAccentTheme
 import com.flowpay.app.ui.theme.FlowpayStatusError
 import com.flowpay.app.ui.theme.FlowpayTextLightGray
 import com.flowpay.app.ui.theme.FlowpayTheme
-import com.flowpay.app.ui.theme.LocalFlowpayAccentTheme
 import com.flowpay.app.ui.theme.statusColor
 import com.flowpay.app.utils.CurrencyFormat
 import com.flowpay.app.viewmodel.TransactionViewModel
@@ -82,12 +80,10 @@ class TransactionHistoryActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_Flowpay)
         setContent {
-            CompositionLocalProvider(LocalFlowpayAccentTheme provides BlueAccentTheme) {
-                FlowpayTheme {
-                    TransactionHistoryScreen(
-                        onBackClick = { finish() }
-                    )
-                }
+            FlowpayTheme {
+                TransactionHistoryScreen(
+                    onBackClick = { finish() }
+                )
             }
         }
     }
@@ -325,7 +321,7 @@ fun TransactionHistoryScreen(
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
-                                    text = "Something went wrong",
+                                    text = stringResource(R.string.history_error_title),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = com.flowpay.app.ui.theme.FlowpayInkWarm
@@ -333,7 +329,7 @@ fun TransactionHistoryScreen(
                                 Spacer(modifier = Modifier.height(4.dp))
                                 TextButton(onClick = { transactionViewModel.refresh() }) {
                                     Text(
-                                        "Retry",
+                                        stringResource(R.string.action_retry),
                                         color = com.flowpay.app.ui.theme.FlowpayInkWarm,
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Medium
@@ -359,9 +355,9 @@ fun TransactionHistoryScreen(
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
                                     text = if (searchQuery.isNotEmpty()) {
-                                        "No matching transactions"
+                                        stringResource(R.string.history_no_matching)
                                     } else {
-                                        "No transactions yet"
+                                        stringResource(R.string.history_no_transactions)
                                     },
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.SemiBold,
@@ -370,9 +366,9 @@ fun TransactionHistoryScreen(
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = if (searchQuery.isNotEmpty()) {
-                                        "Try a different search"
+                                        stringResource(R.string.history_try_different_search)
                                     } else {
-                                        "Transactions will appear here"
+                                        stringResource(R.string.history_transactions_placeholder)
                                     },
                                     fontSize = 13.sp,
                                     color = FlowpayTextLightGray

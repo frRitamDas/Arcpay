@@ -66,7 +66,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -103,14 +102,12 @@ import com.flowpay.app.ui.activities.SettingsActivity
 import com.flowpay.app.ui.activities.TransactionHistoryActivity
 import com.flowpay.app.ui.components.TransactionDetailDialog
 import com.flowpay.app.ui.dialogs.ContactPickerDialog
-import com.flowpay.app.ui.theme.BlueAccentTheme
 import com.flowpay.app.ui.theme.FlowpayDarkGray
 import com.flowpay.app.ui.theme.FlowpayStatusError
 import com.flowpay.app.ui.theme.FlowpayTextGray
 import com.flowpay.app.ui.theme.FlowpayTextLightGray
 import com.flowpay.app.ui.theme.FlowpayTextPale
 import com.flowpay.app.ui.theme.FlowpayTheme
-import com.flowpay.app.ui.theme.LocalFlowpayAccentTheme
 import com.flowpay.app.utils.CurrencyFormat
 import com.flowpay.app.utils.findComponentActivity
 import com.flowpay.app.viewmodel.MainUiEvent
@@ -262,22 +259,20 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            CompositionLocalProvider(LocalFlowpayAccentTheme provides BlueAccentTheme) {
-                FlowpayTheme {
-                    MainScreen(
-                        onInitiateTransfer = { phoneNumber, amount ->
-                            helper.initiateTransfer(phoneNumber, amount)
-                        },
-                        onQRScanClick = {
-                            helper.startQRScanning()
-                        },
-                        onRequestOverlayPermission = {
-                            PermissionManager(this).overlayPermissionSettingsIntent()?.let {
-                                overlayPermissionLauncher.launch(it)
-                            }
+            FlowpayTheme {
+                MainScreen(
+                    onInitiateTransfer = { phoneNumber, amount ->
+                        helper.initiateTransfer(phoneNumber, amount)
+                    },
+                    onQRScanClick = {
+                        helper.startQRScanning()
+                    },
+                    onRequestOverlayPermission = {
+                        PermissionManager(this).overlayPermissionSettingsIntent()?.let {
+                            overlayPermissionLauncher.launch(it)
                         }
-                    )
-                }
+                    }
+                )
             }
         }
     }
@@ -357,7 +352,11 @@ fun PaymentActionButtons(
         )
         com.flowpay.app.ui.components.FormTabButton(
             icon = if (isUpi123Ready) Icons.Default.Person else Icons.Default.Lock,
-            label = if (isUpi123Ready) "Pay Contact" else "Set up UPI 123 IVR",
+            label = if (isUpi123Ready) {
+                stringResource(R.string.home_pay_contact)
+            } else {
+                stringResource(R.string.home_setup_upi123)
+            },
             sublabel = "UPI 123 IVR",
             enabled = true,
             isPrimary = false,
@@ -557,14 +556,14 @@ fun MainScreen(
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
-                                    text = "Flowpay",
+                                    text = stringResource(R.string.home_wordmark),
                                     style = com.flowpay.app.ui.theme.FlowpayDisplayStyle,
                                     fontSize = 26.sp,
                                     color = com.flowpay.app.ui.theme.FlowpayInkWarm
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    text = "Payments Without Internet",
+                                    text = stringResource(R.string.home_tagline),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Normal,
                                     letterSpacing = 1.sp,
@@ -701,13 +700,13 @@ fun MainScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Recent Payments",
+                                text = stringResource(R.string.home_recent_payments_title),
                                 style = com.flowpay.app.ui.theme.FlowpayDisplayStyle,
                                 fontSize = 16.sp,
                                 color = com.flowpay.app.ui.theme.FlowpayInkWarm
                             )
                             Text(
-                                text = "Your latest transactions",
+                                text = stringResource(R.string.home_recent_payments_subtitle),
                                 fontSize = 12.sp,
                                 color = FlowpayTextLightGray
                             )
@@ -719,7 +718,7 @@ fun MainScreen(
                             }
                         ) {
                             Text(
-                                text = "View all",
+                                text = stringResource(R.string.home_view_all),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 color = com.flowpay.app.ui.theme.FlowpayInkWarm,
@@ -749,7 +748,7 @@ fun MainScreen(
                                 )
                                 Spacer(modifier = Modifier.height(20.dp))
                                 Text(
-                                    text = "Loading transactions...",
+                                    text = stringResource(R.string.home_loading_transactions),
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = FlowpayTextLightGray
@@ -765,14 +764,14 @@ fun MainScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = "Failed to load transactions",
+                                    text = stringResource(R.string.home_failed_to_load),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = com.flowpay.app.ui.theme.FlowpayInkWarm
                                 )
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
-                                    text = error ?: "Unknown error",
+                                    text = error ?: stringResource(R.string.home_unknown_error),
                                     fontSize = 13.sp,
                                     color = FlowpayTextLightGray,
                                     textAlign = TextAlign.Center
@@ -780,7 +779,7 @@ fun MainScreen(
                                 Spacer(modifier = Modifier.height(16.dp))
                                 TextButton(onClick = { transactionViewModel.refresh() }) {
                                     Text(
-                                        text = "Retry",
+                                        text = stringResource(R.string.action_retry),
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Medium,
                                         color = com.flowpay.app.ui.theme.FlowpayInkWarm
@@ -804,14 +803,14 @@ fun MainScreen(
                                 )
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text(
-                                    text = "No transactions yet",
+                                    text = stringResource(R.string.home_no_transactions_yet),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = com.flowpay.app.ui.theme.FlowpayInkWarm
                                 )
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
-                                    text = "Your payment history will appear here",
+                                    text = stringResource(R.string.home_payment_history_placeholder),
                                     fontSize = 13.sp,
                                     color = FlowpayTextLightGray,
                                     textAlign = TextAlign.Center
@@ -972,7 +971,7 @@ fun PayContactDialog(
                 .padding(bottom = 28.dp)
         ) {
             Text(
-                text = "Pay Contact",
+                text = stringResource(R.string.home_pay_contact),
                 style = com.flowpay.app.ui.theme.FlowpayDisplayStyle,
                 fontSize = 20.sp,
                 color = ink
@@ -993,7 +992,7 @@ fun PayContactDialog(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "Sending to: $name",
+                            text = stringResource(R.string.home_sending_to, name),
                             color = ink,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium
@@ -1195,7 +1194,7 @@ fun PermissionExplanationDialog(
             TextButton(
                 onClick = onConfirm,
                 colors = ButtonDefaults.textButtonColors(
-                    contentColor = LocalFlowpayAccentTheme.current.accent
+                    contentColor = com.flowpay.app.ui.theme.FlowpayInkWarm
                 )
             ) {
                 Text(confirmButtonText)

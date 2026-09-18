@@ -196,7 +196,6 @@ fun SettingsScreen(
     refreshTrigger: MutableIntState = mutableIntStateOf(0)
 ) {
     val context = LocalContext.current
-    val accent = LocalFlowpayAccentTheme.current
     val state = viewModel.state
 
     // Load settings from repository on first composition
@@ -428,9 +427,7 @@ fun SettingsScreen(
             },
             text = {
                 Text(
-                    "This permanently deletes your entire transaction history and " +
-                        "resets all settings, then returns you to the setup screen. " +
-                        "This cannot be undone.",
+                    stringResource(R.string.settings_clear_data_confirm_body),
                     fontSize = 14.sp,
                     lineHeight = 20.sp
                 )
@@ -629,14 +626,14 @@ private fun PermissionRow(
         // ledger row's "meaning through roundness only for true badges" rule.
         if (granted) {
             Text(
-                text = "Granted",
+                text = stringResource(R.string.settings_permission_granted),
                 color = FlowpayAccentGreenBright,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold
             )
         } else {
             Text(
-                text = "Grant",
+                text = stringResource(R.string.settings_permission_grant),
                 color = com.flowpay.app.ui.theme.FlowpaySeal,
                 fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -665,7 +662,7 @@ private fun BankPickerDialog(
     ) {
         Column(modifier = Modifier.padding(bottom = 20.dp)) {
             Text(
-                text = "Select Bank",
+                text = stringResource(R.string.settings_select_bank),
                 style = com.flowpay.app.ui.theme.FlowpayDisplayStyle,
                 fontSize = 18.sp,
                 color = ink,
@@ -740,7 +737,7 @@ private fun SimPickerDialog(
     ) {
         Column(modifier = Modifier.padding(bottom = 20.dp)) {
             Text(
-                text = "Select Primary SIM",
+                text = stringResource(R.string.settings_select_primary_sim),
                 style = com.flowpay.app.ui.theme.FlowpayDisplayStyle,
                 fontSize = 18.sp,
                 color = ink,

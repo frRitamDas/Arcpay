@@ -97,7 +97,7 @@ fun ContactPickerDialog(
     ) {
         Column(modifier = Modifier.fillMaxWidth().fillMaxHeight(0.85f)) {
             Text(
-                "Select Contact",
+                stringResource(R.string.contacts_select_title),
                 color = FlowpayInkWarm,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,

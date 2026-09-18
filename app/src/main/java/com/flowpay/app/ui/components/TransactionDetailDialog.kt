@@ -134,7 +134,7 @@ fun TransactionDetailDialog(
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "OFFICIAL TRANSACTION REGISTER",
+                    text = stringResource(R.string.detail_register_label).uppercase(),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.sp,
@@ -267,8 +267,7 @@ fun TransactionDetailDialog(
             },
             text = {
                 Text(
-                    "This removes the record from your history on this device. " +
-                        "It cannot be undone and does not affect the actual payment.",
+                    stringResource(R.string.detail_delete_confirm_body),
                     fontSize = 14.sp,
                     lineHeight = 20.sp
                 )

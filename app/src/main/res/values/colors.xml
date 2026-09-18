@@ -6,7 +6,6 @@
     
     <!-- Setup Screen Colors -->
     <color name="setup_text_secondary">#FF888888</color>
-    <color name="setup_text_tertiary">#FF4A4A4A</color>
 
     <!-- Payment Success Colors -->
     <color name="transaction_primary">#FF5E97D1</color>
