@@ -27,6 +27,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   SMS ingestion path now; the payment-outcome notification is unaffected.
 
 ### Fixed
+- Leaving a payment after the request went out no longer marks it cancelled.
+  "Cancel payment" once the IVR call has connected, and back or Terminate on
+  the Scan QR waiting screen after the dialer hand-off, now keep waiting for
+  the bank's SMS and tell the user the payment may still go through. Before,
+  a debit that still happened was dropped and history said CANCELLED.
 - A failed payment's result screen no longer says "Paid to" — that heading
   now only appears on a genuine success; other outcomes read "To"/"From".
 - The Scan QR waiting screen no longer ends the payment session when it
