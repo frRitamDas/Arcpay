@@ -31,6 +31,8 @@ internal object DatabaseEncryptionMigrator {
      * launch's migration failed; the caller then opens it without a key, and
      * the next launch tries again.
      */
+    // one guard clause per retryable/terminal outcome reads clearer than one accumulated condition
+    @Suppress("ReturnCount")
     fun ensureEncrypted(context: Context, dbName: String, passphrase: String): Boolean {
         val prefs = context.getSharedPreferences(DatabaseKeyManager.PREFS_NAME, Context.MODE_PRIVATE)
         val dbFile = context.getDatabasePath(dbName)

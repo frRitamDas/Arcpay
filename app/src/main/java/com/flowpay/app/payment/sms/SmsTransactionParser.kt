@@ -236,6 +236,10 @@ object SmsTransactionParser {
      * into the USSD menu and the app never sees it. A debit naming that VPA is
      * this payment whatever its amount. See [checkQrPayee].
      */
+    // expectedPayeeVpa and its QR-payee branches are genuinely necessary
+    // (issue #26): a static QR has no amount to check, so the VPA is the
+    // only signal that ties a debit to this payment.
+    @Suppress("LongParameterList", "CyclomaticComplexMethod", "ReturnCount")
     fun parse(
         sender: String,
         body: String,
