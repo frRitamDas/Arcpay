@@ -145,14 +145,17 @@ fun TransactionDetailDialog(
                 // Bank reference — the number from the bank's own SMS, the
                 // one a user would actually quote back to their bank in a
                 // dispute. Shown first, in monospace, and only when the bank
-                // supplied one (a PENDING row has none yet).
-                if (!transaction.bankRef.isNullOrEmpty()) {
+                // supplied one (a PENDING row has none yet). displayBankRef()
+                // strips the `_<timestamp>` row-key suffix rows on disk may
+                // still carry — the bank never sees that suffix.
+                val bankRef = transaction.displayBankRef()
+                if (bankRef != null) {
                     DetailRow(
                         label = stringResource(R.string.label_bank_reference),
-                        value = transaction.bankRef,
+                        value = bankRef,
                         mono = true,
                         valueColor = FlowpaySeal,
-                        onCopy = { clipboardManager.setText(AnnotatedString(transaction.bankRef)) }
+                        onCopy = { clipboardManager.setText(AnnotatedString(bankRef)) }
                     )
                     DetailDivider()
                 }
