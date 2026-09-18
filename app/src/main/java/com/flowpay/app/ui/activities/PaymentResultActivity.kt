@@ -133,8 +133,8 @@ class PaymentResultActivity : AppCompatActivity() {
         // property is set explicitly (never relying on layout defaults) so an
         // onNewIntent re-render from a different status resets cleanly.
         //
-        // Color language: SUCCESS wears the brand look (blue gradient circle,
-        // blue heading, green amount). Non-success outcomes wear their status
+        // Color language: SUCCESS wears a green stamp ring, green heading,
+        // green amount. Non-success outcomes wear their status
         // color on circle + heading + amount so a FAILED result can never be
         // mistaken for a success at a glance. The glyph is always white.
         when (status) {
