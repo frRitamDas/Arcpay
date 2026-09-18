@@ -248,7 +248,6 @@
     <!-- Transaction detail dialog -->
     <string name="detail_title">Transaction Details</string>
     <string name="detail_delete_confirm_title">Delete this transaction?</string>
-    <string name="detail_close">Close</string>
     <string name="detail_label_recipient">Recipient</string>
     <string name="detail_label_phone_number">Phone Number</string>
     <string name="detail_bank_confirmation">Bank Confirmation</string>

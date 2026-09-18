@@ -11,6 +11,13 @@
     <!-- Payment Success Colors -->
     <color name="transaction_primary">#FF5E97D1</color>
 
+    <!-- "Bank-Stamped" ledger tokens — the View/XML mirror of
+         ui/theme/Color.kt's FlowpayLedgerRule/FlowpaySeal/FlowpayInkWarm,
+         for the classic-View payment-result and QR-scanner screens. -->
+    <color name="flowpay_ledger_rule">#FF3A4A5E</color>
+    <color name="flowpay_seal">#FFB3453D</color>
+    <color name="flowpay_ink_warm">#FFF5F3EE</color>
+
     <!-- QR Scanner Colors -->
 
     <!-- Feedback Colors -->

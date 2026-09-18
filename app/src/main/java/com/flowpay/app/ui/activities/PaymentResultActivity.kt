@@ -215,11 +215,13 @@ class PaymentResultActivity : AppCompatActivity() {
         }
     }
 
-    /** SUCCESS look: brand-blue gradient circle, blue heading, green amount. */
+    /** SUCCESS look: green stamp ring, green heading, green amount — one
+     *  color across the whole confirmation, matching the ledger system's
+     *  "success is always green" rule instead of a separate blue heading. */
     private fun applySuccessAccent() {
         statusCircle.backgroundTintList = null
         statusCircle.background = ContextCompat.getDrawable(this, R.drawable.circle_success_bg)
-        statusText.setTextColor(ContextCompat.getColor(this, R.color.transaction_primary))
+        statusText.setTextColor(ContextCompat.getColor(this, R.color.flowpay_green))
         amountText.setTextColor(ContextCompat.getColor(this, R.color.flowpay_green))
     }
 
