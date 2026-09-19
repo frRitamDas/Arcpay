@@ -157,3 +157,8 @@ You may use, modify, and redistribute this code under the terms of the Apache Li
 ## Legal
 
 Full terms — no warranty, no affiliation with any bank or telecom, liability, and compliance — are in [LEGAL.md](LEGAL.md). By using, building, modifying, redistributing, or otherwise interacting with this software, you acknowledge that you have read, understood, and agreed to those terms.
+
+
+## Arcpay 1.1 release build
+
+CI release build is gated by automated tests and APK signature verification.
