@@ -378,6 +378,12 @@ fun SettingsScreen(
                             title = "Android",
                             value = Build.VERSION.RELEASE
                         )
+                        GroupDivider()
+                        SettingsRow(
+                            icon = Icons.Default.Person,
+                            title = "Developer",
+                            value = stringResource(R.string.developer_name)
+                        )
                     }
                 }
 
