@@ -51,7 +51,7 @@ jobs:
           ./gradlew assembleRelease --no-daemon --stacktrace
           APK="app/build/outputs/apk/release/app-release.apk"
           test -f "$APK"
-          apksigner verify --verbose "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
           sha256sum "$APK"
 
       - name: Publish GitHub Release v1.1
