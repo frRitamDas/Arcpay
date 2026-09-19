@@ -31,27 +31,31 @@ jobs:
 
       - name: Create temporary release signing key
         run: |
+          set -euo pipefail
+          SIGNING_PASSWORD="$(openssl rand -hex 32)"
           keytool -genkeypair -v \
             -keystore release.jks \
-            -storepass arcpay-release \
-            -keypass arcpay-release \
+            -storepass "$SIGNING_PASSWORD" \
+            -keypass "$SIGNING_PASSWORD" \
             -alias arcpay \
             -keyalg RSA \
             -keysize 2048 \
             -validity 10000 \
             -dname "CN=Ritam Das, OU=Arcpay, O=Arcpay, L=Kolkata, ST=West Bengal, C=IN"
-          printf '%s\n' \
-            'storeFile=$GITHUB_WORKSPACE/release.jks' \
-            'storePassword=arcpay-release' \
-            'keyAlias=arcpay' \
-            'keyPassword=arcpay-release' > keystore.properties
+          {
+            printf '%s\n' "storeFile=$GITHUB_WORKSPACE/release.jks"
+            printf '%s\n' "storePassword=$SIGNING_PASSWORD"
+            printf '%s\n' "keyAlias=arcpay"
+            printf '%s\n' "keyPassword=$SIGNING_PASSWORD"
+          } > keystore.properties
+          chmod 600 keystore.properties release.jks
 
       - name: Run tests
         run: ./gradlew test --no-daemon --stacktrace
 
       - name: Build and verify Arcpay 1.1 release APK
         run: |
-          ./gradlew assembleRelease --no-daemon --stacktrace
+          ./gradlew clean test assembleRelease --no-daemon --stacktrace
           APK="app/build/outputs/apk/release/app-release.apk"
           test -f "$APK"
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
