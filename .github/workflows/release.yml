@@ -26,14 +26,39 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v6
 
-      - name: Build Arcpay 1.1 release APK
-        run: ./gradlew assembleRelease -PallowUnsigned --no-daemon --stacktrace
+      - name: Create temporary release signing key
+        run: |
+          keytool -genkeypair -v \
+            -keystore release.jks \
+            -storepass arcpay-release \
+            -keypass arcpay-release \
+            -alias arcpay \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Ritam Das, OU=Arcpay, O=Arcpay, L=Kolkata, ST=West Bengal, C=IN"
+          printf '%s\n' \
+            'storeFile=$GITHUB_WORKSPACE/release.jks' \
+            'storePassword=arcpay-release' \
+            'keyAlias=arcpay' \
+            'keyPassword=arcpay-release' > keystore.properties
+
+      - name: Run tests
+        run: ./gradlew test --no-daemon --stacktrace
+
+      - name: Build and verify Arcpay 1.1 release APK
+        run: |
+          ./gradlew assembleRelease --no-daemon --stacktrace
+          APK="app/build/outputs/apk/release/app-release.apk"
+          test -f "$APK"
+          apksigner verify --verbose "$APK"
+          sha256sum "$APK"
 
       - name: Publish GitHub Release v1.1
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+          APK="app/build/outputs/apk/release/app-release.apk"
           test -f "$APK"
           if gh release view v1.1 >/dev/null 2>&1; then
             gh release upload v1.1 "$APK" --clobber
@@ -42,5 +67,5 @@ jobs:
 
           App renamed to Arcpay and version updated to 1.1.
           
-          Note: this repository does not contain a persistent signing key, so this release asset is the unsigned CI release APK."
+          The APK is built, signed, and verified by the release workflow."
           fi
