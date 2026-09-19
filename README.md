@@ -162,3 +162,6 @@ Full terms — no warranty, no affiliation with any bank or telecom, liability, 
 ## Arcpay 1.1 release build
 
 CI release build is gated by automated tests and APK signature verification.
+
+
+Arcpay 1.1 CI verification trigger: Kotlin/KSP compatibility fixed for AGP 8.7.2.
