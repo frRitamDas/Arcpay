@@ -1,0 +1,46 @@
+name: Release Arcpay
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[release v1.1]')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build Arcpay 1.1 release APK
+        run: ./gradlew assembleRelease -PallowUnsigned --no-daemon --stacktrace
+
+      - name: Publish GitHub Release v1.1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+          test -f "$APK"
+          if gh release view v1.1 >/dev/null 2>&1; then
+            gh release upload v1.1 "$APK" --clobber
+          else
+            gh release create v1.1 "$APK" --title "Arcpay 1.1" --latest --notes "Arcpay 1.1 — Developer: Ritam Das
+
+          App renamed to Arcpay and version updated to 1.1.
+          
+          Note: this repository does not contain a persistent signing key, so this release asset is the unsigned CI release APK."
+          fi
