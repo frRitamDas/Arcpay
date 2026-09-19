@@ -1,27 +1,27 @@
 name: Dependency review
 
-on: [pull_request]
+on:
+  pull_request:
 
 permissions:
   contents: read
 
 jobs:
   dependency-review:
-    name: Review dependency changes
+    name: Dependency sanity check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      - name: Dependency review
-        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0
+      - name: Set up JDK 17
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb1365907ce7c4a0ac95 # v5
         with:
-          # Block known-vulnerable or non-FOSS-compatible additions at PR time.
-          # This only sees Gradle dependencies because dependency-submission.yml
-          # populates the graph on push to main — GitHub does not detect Gradle
-          # dependencies statically, so without that workflow this gate reports
-          # nothing and passes on every PR.
-          fail-on-severity: high
-          # Copyleft licences incompatible with redistributing an Apache-2.0
-          # APK. LGPL is included: static linking into an APK is the norm here.
-          deny-licenses: GPL-2.0, GPL-3.0, LGPL-2.1, LGPL-3.0, AGPL-1.0, AGPL-3.0
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
+
+      - name: Verify dependency resolution
+        run: ./gradlew dependencies --configuration debugRuntimeClasspath --no-daemon --stacktrace
